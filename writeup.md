@@ -19,7 +19,7 @@ The goals / steps of this project are the following:
 
 [image2]: ./ReducedData.png "Data Histogram"
 
-[image3]: ./center_2018_01_15_20_58_50_532.jpg "training"
+[image3]: ./example_from_dataset.jpg "training"
 
 [image4]: ./originaldata.png "original data"
 
