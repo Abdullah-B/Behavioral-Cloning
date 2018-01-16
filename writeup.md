@@ -39,8 +39,23 @@ python drive.py model.h5
 
 The Track-Driving-Training.ipynb. This file is the pipeline I used for training and validating the model.
 The drive.py file has been edited from its original code to also include preprocessing of images(lines 50-65 and 81-83). This is the same preprocessing that follows 
-Nvidia's recomendation of changing the image size  and converting it to YUV 
+Nvidia's recomendation of changing the image size  and converting it to YUV.
 
+ *Preprocess image function (distortion, color space conversion)
+
+ 1. Crop the image to keep pixels 50-140 on the y axis while retaining the x axis and the 3(bgr) layers
+ 2. Resize the image to minimize the required memory and make the training faster, the target resize is the recommended amount from the Nvidia documentation
+ 3. Apply a small gaussian blur to reduce noise
+ 4. Convert the image to YUV color space to better the contrast for the learning process. As the Nvidia doc suggests, the YUV will allow the model to learn view the contrasting terrains/edges better
+ 
+  Then use the  generator method to create extra training data by applying changes to the current images and adding them as new data.
+  The first change is to make sure the images match our pre processing from the drive.py so we call pre_process() on each of them.
+  Next we shuffle the data and if the angle size is greater or less than .33 we create a mirrored image and apply the opposite(to the original) angle and append that data to the data set. We then shuffle the data again before yielding the batch size back
+  
+  Since the data created  and shuffled by the generator provides enough changes we use the initial data set for both training and validation sets
+  
+  we then use the data to train the model.
+ 
 # Model Architecture and Training Strategy
 
 ##  Architecture
@@ -54,6 +69,8 @@ The model used is the suggested Nvidia architecture.
 * Flatten
 * Fully Connected Layer x4
 
+the model used is the Keras model with Nvidia cnn 
+we implemented the Normalization layer with Keras lamda, and ended up with three 5x5 convolution layers, two 3x3 convolution layers, and three fully-connected layers - and as described in the paper text - including converting from RGB to YUV color space, and 2x2 striding on the 5x5 convolutional layers. 
 Here is a visualization of the model:
 
 ![alt text][image1]
@@ -66,6 +83,7 @@ The model used an adam optimizer, so the learning rate was not tuned manually (m
 
 Training data used was provided by Udacity.
 
+
 ## Creating  the Training Set & Training Process
 
 The data set initially contained 24108 images and 8036 angle recordings of track 1 from various runs and after several attempts to train the model on the data without modifications 
@@ -77,7 +95,7 @@ The result of the data deletion can be seen in this histogram:
 
 
 This resulted in a much smaller starting training set but was overcome with the creation of extra data by mirroring the remaining images and angle values through the generator function "generate_training_data".
-The validation set was created from the reduced training set through the generator function too. The generator function shuffles the data to avoid overfitting and create a reliable validation set.
+The validation set was created from the reduced training set through the generator function too. The generator function shuffles the data to avoid over fitting and create a reliable validation set.
 
 
 #### Resources:
