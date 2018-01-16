@@ -15,8 +15,8 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./media/NvidiaArch.png "Nvidia Architecture"
-
+[image1]: ./NvidiaArch.png "Nvidia Architecture"
+[image2]: ./ReducedData.png "Data Histogram"
 
 
 ---
@@ -66,7 +66,18 @@ The model used an adam optimizer, so the learning rate was not tuned manually (m
 
 Training data used was provided by Udacity.
 
+## Creating  the Training Set & Training Process
 
+The data set initially contained 24108 images and 8036 angle recordings of track 1 from various runs and after several attempts to train the model on the data without modifications 
+I realized that it contains a lot of "useless" angle values, specifically a lot(almost half) of entries where the angle is 0 which resulted in a model with a bias towards not making adjustments
+and not steering as much as needed. To work around this issue I cycled through the dataset and reduced its size by removing rows of data where the same angle is repeated more than the average angles of the dataset.
+The result of the data deletion can be seen in this histogram:
+
+![alt text][image2]
+
+
+This resulted in a much smaller starting training set but was overcome with the creation of extra data by mirroring the remaining images and angle values through the generator function "generate_training_data".
+The validation set was created from the reduced training set through the generator function too. The generator function shuffles the data to avoid overfitting and create a reliable validation set.
 
 
 #### Resources:
