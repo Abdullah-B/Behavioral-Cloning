@@ -26,7 +26,7 @@ The goals / steps of this project are the following:
 * model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode(edited from original)
 * model.h5 containing a trained convolution neural network 
-* run1.mp4 a recording of the model driving on the first track
+* https://youtu.be/TrXmzi4mkAA a recording of the model driving on the first track (too big to upload)
 
 
 ##  Submission includes functional code
