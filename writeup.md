@@ -17,8 +17,10 @@ The goals / steps of this project are the following:
 
 [image1]: ./NvidiaArch.png "Nvidia Architecture"
 [image2]: ./ReducedData.png "Data Histogram"
-
-
+[image3]: ./center_2018_01_15_20_58_50_532.jpg "training"
+[image4]: ./originaldata.png "original data"
+[image5]: ./angle.png "greater than0.33"
+[image6]: ./angleshuffle.png "angle rotated"
 ---
 # Files Submitted
 
@@ -48,6 +50,8 @@ Nvidia's recomendation of changing the image size  and converting it to YUV.
  3. Apply a small gaussian blur to reduce noise
  4. Convert the image to YUV color space to better the contrast for the learning process. As the Nvidia doc suggests, the YUV will allow the model to learn view the contrasting terrains/edges better
  
+  ![alt text][image4]    ![alt text][image3]
+  
   Then use the  generator method to create extra training data by applying changes to the current images and adding them as new data.
   The first change is to make sure the images match our pre processing from the drive.py so we call pre_process() on each of them.
   Next we shuffle the data and if the angle size is greater or less than .33 we create a mirrored image and apply the opposite(to the original) angle and append that data to the data set. We then shuffle the data again before yielding the batch size back
@@ -75,6 +79,13 @@ Here is a visualization of the model:
 
 ![alt text][image1]
 
+ I also added a pooling layer to the last two to  the last two convolution layers, it will progressively reduce the spatial size of the representation to reduce the amount of parameter computation, which in turn will help with any over fitting problems
+
+      model.add(Convolution2D(64,3,3,activation="relu"))
+      model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
+      model.add(Convolution2D(64,3,3,activation="relu"))
+      model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
+
 ##  Parameter tuning
 
 The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 193).
@@ -82,6 +93,7 @@ The model used an adam optimizer, so the learning rate was not tuned manually (m
 ##  Training data
 
 Training data used was provided by Udacity.
+
 
 
 ## Creating  the Training Set & Training Process
@@ -96,6 +108,8 @@ The result of the data deletion can be seen in this histogram:
 
 This resulted in a much smaller starting training set but was overcome with the creation of extra data by mirroring the remaining images and angle values through the generator function "generate_training_data".
 The validation set was created from the reduced training set through the generator function too. The generator function shuffles the data to avoid over fitting and create a reliable validation set.
+
+![alt text][image5]    ![alt text][image6]
 
 
 #### Resources:

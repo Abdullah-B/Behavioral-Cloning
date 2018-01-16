@@ -42,6 +42,7 @@ def preprocess_image(img):
 print("Done")
 
 
+
 # ## Generate the training data with pre processing
 
 # ### The Generator
@@ -178,11 +179,14 @@ print('Size of data after removing unwanted values:', image_paths.shape, angles.
 model = Sequential()
 model.add(Lambda(lambda x: (x / 127.5) - 1.0, input_shape=(66,200,3)))
 ##Nvidia Model
+## i added two maxpooling layers to the last two convolution layers 
 model.add(Convolution2D(24,5,5,subsample=(2,2),activation="relu"))
 model.add(Convolution2D(36,5,5,subsample=(2,2),activation="relu"))
 model.add(Convolution2D(48,5,5,subsample=(2,2),activation="relu"))
 model.add(Convolution2D(64,3,3,activation="relu"))
+model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
 model.add(Convolution2D(64,3,3,activation="relu"))
+model.add(MaxPooling2D(pool_size=(2, 2), strides=(1, 1)))
 model.add(Flatten())
 model.add(Dense(100))
 model.add(Dense(50))
