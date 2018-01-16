@@ -16,11 +16,21 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./NvidiaArch.png "Nvidia Architecture"
+
 [image2]: ./ReducedData.png "Data Histogram"
+
 [image3]: ./center_2018_01_15_20_58_50_532.jpg "training"
+
 [image4]: ./originaldata.png "original data"
+
 [image5]: ./angle.png "greater than0.33"
+
 [image6]: ./angleshuffle.png "angle rotated"
+
+
+
+
+
 ---
 # Files Submitted
 
